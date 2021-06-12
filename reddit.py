@@ -4,33 +4,23 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 from datetime import datetime
 import json
 
-
+""""
 def get_last_day_post_for_top50():
     binance_url = 'https://api.binance.com/api/v3/exchangeInfo'
-    coinmarketcap_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-
-    parameters = {
-        'start': '1',
-        'limit': '50'
-    }
-    headers = {
-        'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': '914f2649-4495-4906-aadb-e55ea1e56ea2',
-    }
+    coin_guecko_url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
 
     session_binance = Session()
-    session_coinmarketcap = Session()
-    session_coinmarketcap.headers.update(headers)
+    session_coinguecko = Session()
 
     try:
         response_binance = session_binance.get(binance_url)
-        response_coinmarketcap = session_coinmarketcap.get(coinmarketcap_url, params=parameters)
+        response_coinguecko = session_coinguecko.get(coin_guecko_url)
         data_binance = json.loads(response_binance.text)
-        data_coinmarketcap = json.loads(response_coinmarketcap.text)
+        data_coinmarketcap = json.loads(response_coinguecko.text)
         symbols = {}
         symbols_coinmarketcap = {}
         symbols_binance = list(set([cryto['baseAsset'] for cryto in data_binance['symbols']]))
-        for crypto in data_coinmarketcap['data']:
+        for crypto in data_coinmarketcap:
             symbols_coinmarketcap[crypto['symbol']] = crypto['name']
         for symbol in symbols_coinmarketcap:
             if symbol in symbols_binance:
@@ -60,23 +50,19 @@ def get_last_day_post_for_top50():
             print(crytotag)
             print(submission.title)
             print(submission.url)
+            
+"""
 
 
 def get_last_day_post_for_ticker(ticker):
-    coinmarketcap_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?symbol=' + ticker
+    nomics_url = "https://api.nomics.com/v1/currencies?key=f40c6b7456c197028c38acdd0a2b6c23&ids=" + ticker + "&attributes=id,name"
 
-    headers = {
-        'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': '914f2649-4495-4906-aadb-e55ea1e56ea2',
-    }
-
-    session_coinmarketcap = Session()
-    session_coinmarketcap.headers.update(headers)
+    session_nomics = Session()
 
     try:
-        response_coinmarketcap = session_coinmarketcap.get(coinmarketcap_url)
-        data_coinmarketcap = json.loads(response_coinmarketcap.text)["data"][ticker]
-        symbols = {data_coinmarketcap["name"], data_coinmarketcap["symbol"]}
+        response_nomics = session_nomics.get(nomics_url)
+        data_nomics = json.loads(response_nomics.text)[0]
+        symbols = {data_nomics["name"], data_nomics["id"]}
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
 
