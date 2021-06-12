@@ -99,6 +99,7 @@ def get_last_day_post_for_ticker(ticker):
         if total != 0:
             item = {"ticker": ticker, "title": submission.title, "url": submission.url}
             post_list.append(item)
-            print(post_list)
+        if len(post_list) == 10:
+            break
 
     return json.dumps(post_list)
