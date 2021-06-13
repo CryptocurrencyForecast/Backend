@@ -12,7 +12,10 @@ def get_account_balance(token):
     balance = client.get_account()
     [balance.pop(k) for k in list(balance.keys()) if k != 'balances']
 
-    return json.dumps(balance)
+    return json.dumps(balance["balances"])
+
+
+
 
 # api_key = 'UimWOZ9hTGnsH1K2iIad65HcDCM0wMcvhpV8i7WzhxKyT17s3CDk4YLEZIsRJfBM'
 # api_secret = 'XVtmEKyTUeP3hxw6xmWjWWWWf2DWPSgyQXxSFrrQMt3TjL8vYGryyjzLBiYfQYa3'
