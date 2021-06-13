@@ -7,7 +7,7 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 
 
 def get_trending_on_reddit():
-    nomics_url = 'https://api.nomics.com/v1/currencies/ticker?key=f40c6b7456c197028c38acdd0a2b6c23&status=active&interval=1d&per-page=30&page=1&sort=rank'
+    nomics_url = 'https://api.nomics.com/v1/currencies/ticker?key=f40c6b7456c197028c38acdd0a2b6c23&status=active&interval=1d&per-page=8&page=1&sort=rank'
     session_nomics = Session()
 
     symbols = []
@@ -40,7 +40,8 @@ def get_trending_on_reddit():
 
 
 def get_last_day_post_for_ticker(ticker):
-    nomics_url = "https://api.nomics.com/v1/currencies?key=f40c6b7456c197028c38acdd0a2b6c23&ids=" + ticker + "&attributes=id,name"
+    nomics_url = "https://api.nomics.com/v1/currencies?key=f40c6b7456c197028c38acdd0a2b6c23&ids=" + \
+        ticker + "&attributes=id,name"
 
     session_nomics = Session()
 
@@ -68,7 +69,8 @@ def get_last_day_post_for_ticker(ticker):
             if word in symbols:
                 total += 1
         if total != 0:
-            item = {"ticker": ticker, "title": submission.title, "url": submission.url}
+            item = {"ticker": ticker, "title": submission.title,
+                    "url": submission.url}
             post_list.append(item)
         if len(post_list) == 10:
             break
