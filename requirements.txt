@@ -3,3 +3,4 @@ flask_cors
 psaw~=0.1.0
 requests~=2.25.1
 python-binance
+gunicorn
