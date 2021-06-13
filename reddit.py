@@ -1,30 +1,22 @@
-from psaw import PushshiftAPI
-from requests import Request, Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-from datetime import datetime
 import json
+from datetime import datetime
 
-""""
-def get_last_day_post_for_top50():
-    binance_url = 'https://api.binance.com/api/v3/exchangeInfo'
-    coin_guecko_url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
+from psaw import PushshiftAPI
+from requests import Session
+from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 
-    session_binance = Session()
-    session_coinguecko = Session()
+
+def get_trending_on_reddit():
+    nomics_url = 'https://api.nomics.com/v1/currencies/ticker?key=f40c6b7456c197028c38acdd0a2b6c23&status=active&interval=1d&per-page=8&page=1&sort=rank'
+    session_nomics = Session()
+
+    symbols = []
 
     try:
-        response_binance = session_binance.get(binance_url)
-        response_coinguecko = session_coinguecko.get(coin_guecko_url)
-        data_binance = json.loads(response_binance.text)
-        data_coinmarketcap = json.loads(response_coinguecko.text)
-        symbols = {}
-        symbols_coinmarketcap = {}
-        symbols_binance = list(set([cryto['baseAsset'] for cryto in data_binance['symbols']]))
-        for crypto in data_coinmarketcap:
-            symbols_coinmarketcap[crypto['symbol']] = crypto['name']
-        for symbol in symbols_coinmarketcap:
-            if symbol in symbols_binance:
-                symbols[symbol] = symbols_coinmarketcap[symbol]
+        response_nomics = session_nomics.get(nomics_url)
+        data_nomics = json.loads(response_nomics.text)
+        for crypto in data_nomics:
+            symbols.append([crypto["symbol"], crypto["name"], 0])
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
 
@@ -39,19 +31,12 @@ def get_last_day_post_for_top50():
                                          filter=['url', 'author', 'title', 'subreddit'])
     for submission in submissions:
         words = submission.title.split()
-        crytotag = {}
         for word in words:
-            if word in symbols:
-                crytotag[word] = symbols[word]
-            elif word in symbols.values():
-                crytotag[list(symbols.keys())[list(symbols.values()).index(word)]] = word
+            for symbol in symbols:
+                if word in symbol:
+                    symbol[2] += 1
 
-        if len(crytotag):
-            print(crytotag)
-            print(submission.title)
-            print(submission.url)
-            
-"""
+    return json.dumps(symbols)
 
 
 def get_last_day_post_for_ticker(ticker):
