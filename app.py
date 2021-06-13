@@ -11,3 +11,4 @@ def get_posts_for_ticker(ticker):
     r = make_response(data)
     r.mimetype = 'application/json'
     return r
+
