@@ -25,9 +25,9 @@ def get_account_balance(token):
             balance["balances"][i]["value"]=(str(1*float(balance["balances"][i]["free"])))
         else :
             balance["balances"][i]["value"]=(str(float(data['price'])*float(balance["balances"][i]["free"])))
-            
+
     return json.dumps(balance["balances"])
     
-# Test net keys (dummy network)
+# Test net keys (dummy network, not critical)
 # api_key = 'UimWOZ9hTGnsH1K2iIad65HcDCM0wMcvhpV8i7WzhxKyT17s3CDk4YLEZIsRJfBM'
 # api_secret = 'XVtmEKyTUeP3hxw6xmWjWWWWf2DWPSgyQXxSFrrQMt3TjL8vYGryyjzLBiYfQYa3'
