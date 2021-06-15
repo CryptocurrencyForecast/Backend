@@ -3,6 +3,7 @@ from binance_api import get_account_balance
 from reddit import get_last_day_post_for_ticker, get_trending_on_reddit
 from nomics import get_information_nomics
 from flask_cors import CORS
+from marketCap import get_marketcap_information_ticker
 
 app = Flask(__name__)
 CORS(app)
@@ -35,6 +36,14 @@ def get_trending_currencies():
 @app.route('/nomics/<token>', methods=['GET'])
 def get_information_crypto(token):
     data = get_information_nomics(token)
+    r = make_response(data)
+    r.mimetype = 'application/json'
+    return r
+
+
+@app.route('/marketcap/<token>', methods=['GET'])
+def get_information_crypto_market(token):
+    data = get_marketcap_information_ticker(token)
     r = make_response(data)
     r.mimetype = 'application/json'
     return r
