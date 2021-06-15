@@ -1,4 +1,4 @@
-from flask import Flask, make_response
+from flask import Flask, make_response,render_template
 from binance_api import get_account_balance
 from reddit import get_last_day_post_for_ticker, get_trending_on_reddit
 from nomics import get_information_nomics
@@ -47,3 +47,8 @@ def get_information_crypto_market(token):
     r = make_response(data)
     r.mimetype = 'application/json'
     return r
+
+
+@app.route('/', methods=['GET'])
+def get_root():
+    return render_template('root.html')
